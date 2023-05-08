@@ -8,14 +8,3 @@ const api = axios.create({
 });
 
 export default api;
-
-/*
-Este código pode ser utilizado para fazer requisições 
-à API de filmes do The Movie Database (TMDb). 
-O axios é uma biblioteca para fazer requisições HTTP, 
-e a instância api criada já possui a base da URL da 
-API definida. Dessa forma, para fazer uma requisição 
-para a API de filmes, basta usar o método get do axios 
-passando como parâmetro a URL da API específica que 
-se deseja consultar.
-*/
