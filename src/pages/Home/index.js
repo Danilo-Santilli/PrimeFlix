@@ -1,39 +1,55 @@
-import { useEffect, useState } from 'react'; //importa o hook useEffect e useState do React
-import api from '../../Services/api'; //importa o módulo que lida com a API
-import { Link } from 'react-router-dom'; //importa o componente Link do React Router
-import './home.css'; //importa o arquivo CSS
+import { useEffect, useState } from 'react';
+import api from '../../Services/api';
+import { Link } from 'react-router-dom';
+import './home.css';
 
-// URL da API: /movie/now_playing?api_key=689d6c2e5f0a5e5187dc23b26f775e43
 function Home() {
-  const [filmes, setFilmes] = useState([]); //inicializa o estado filmes com um array vazio
+  // Define o estado dos filmes e inicializa como um array vazio.
+  const [filmes, setFilmes] = useState([]);
+  // Define o estado de loading e inicializa como true.
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadFilmes() { //declaração da função assíncrona
-      const response = await api.get('movie/now_playing', { //chamada da API para obter os filmes em cartaz
+    async function loadFilmes() {
+      // Faz a requisição dos filmes em cartaz usando a api criada anteriormente.
+      const response = await api.get('movie/now_playing', {
         params: {
           api_key: '689d6c2e5f0a5e5187dc23b26f775e43',
           page: 1,
         },
       });
 
-      setFilmes(response.data.results.slice(0, 10)); //atualiza o estado filmes com os 10 primeiros resultados
+      // Atualiza o estado de filmes com os dados obtidos na requisição e filtra os 10 primeiros resultados.
+      setFilmes(response.data.results.slice(0, 10));
+      // Muda o estado de loading para false para indicar que a requisição terminou de ser carregada.
+      setLoading(false);
     }
 
-    loadFilmes(); //chama a função loadFilmes
-  }, []); //indica que o efeito só deve ser executado uma vez, no momento da montagem do componente
+    loadFilmes();
+  }, []);
 
+  // Verifica se ainda está carregando os filmes, caso sim, exibe uma mensagem.
+  if (loading) {
+    return(
+        <div className='loading'>
+            <h2>Carregando filmes...</h2>
+        </div>
+    );
+  }
+
+  // Caso contrário, renderiza a lista de filmes.
   return (
-    <div className='container'> {/* container para envolver os elementos da página */}
-      <div className='lista-filmes'> {/* envolve a lista de filmes */}
-        {filmes.map((filme) => { //mapeia cada filme no array de filmes
+    <div className='container'>
+      <div className='lista-filmes'>
+        {filmes.map((filme) => { 
           return (
-            <article key={filme.id}> {/* componente de artigo para exibir cada filme */}
-              <strong>{filme.title}</strong> {/* exibe o título do filme */}
+            <article key={filme.id}>
+              <strong>{filme.title}</strong>
               <img
-                src={`https://image.tmdb.org/t/p/original/${filme.poster_path}`} //URL para exibir o poster do filme
-                alt={filme.title} //texto alternativo para o poster
+                src={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                alt={filme.title}
               />
-              <Link to={`/filme/${filme.id}`}>Acessar</Link> {/* cria um link para a página de detalhes do filme */}
+              <Link to={`/filme/${filme.id}`}>Acessar</Link>
             </article>
           );
         })}
