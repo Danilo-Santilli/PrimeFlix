@@ -38,36 +38,21 @@ function Filme(){
     }, [navigate, id]);
 
     function salvarFilme() {
-        // Obtém o valor armazenado no localStorage sob a chave "@primeflix"
         const minhaLista = localStorage.getItem("@primeflix");
       
-        // Inicializa a variável "filmesSalvos" com o valor recuperado do localStorage,
-        // utilizando JSON.parse para transformar a string em um objeto JS.
-        // Caso não haja valor armazenado no localStorage, a variável é inicializada
-        // com um array vazio.
         let filmesSalvos = JSON.parse(minhaLista) || [];
       
-        // Verifica se o filme já está salvo na lista de filmes salvos.
-        // A função some é utilizada para verificar se há algum elemento do array
-        // que satisfaz a condição passada como argumento (no caso, se o id do filme
-        // atual é igual ao id de algum dos filmes salvos na lista).
         const hasFilme = filmesSalvos.some((filmesSalvo) => filmesSalvo.id === filme.id);
       
-        // Se o filme já está salvo na lista, exibe um alerta informando e interrompe
-        // a execução da função.
         if (hasFilme) {
           alert('Esse filme já está na lista!');
           return;
         }
       
-        // Se o filme não está salvo na lista, adiciona-o ao array de filmes salvos.
         filmesSalvos.push(filme);
       
-        // Armazena o array atualizado de filmes salvos no localStorage,
-        // utilizando JSON.stringify para transformar o objeto JS em uma string.
         localStorage.setItem("@primeflix", JSON.stringify(filmesSalvos));
       
-        // Exibe um alerta informando que o filme foi salvo com sucesso.
         alert("Filme salvo!");
       }
       
